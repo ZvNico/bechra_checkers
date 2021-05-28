@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QMainWindow, QMenuBar, QMenu, QAction, QWidget, QGridLayout
+from PyQt5.QtWidgets import QMainWindow, QMenu, QAction, QWidget, QGridLayout
 from PyQt5 import QtGui
 from const import FIELD_SIZE
 from classes.Square import Square
@@ -11,18 +11,15 @@ class Application(QMainWindow):
         super().__init__()
         self.setWindowIcon(QtGui.QIcon('assets/logo.png'))
         self.setWindowTitle("Jeu de dames ESME Sudria")
-        self.layout = QGridLayout()
-        self.layout.addWidget(Checkers)
-        self.setFixedWidth(FIELD_SIZE)
-        self.setFixedHeight(FIELD_SIZE)
         self.init_menu()
-        self.board = [[Square(i, j, self) for i in range(10)] for j in range(10)]
+        self.boards = []
+        self.central_widget = QWidget()
+        self.checkers = Checkers()
+        layout = QGridLayout()
+        layout.addWidget(self.checkers, 0, 0)
+        self.central_widget.setLayout(layout)
+        self.setCentralWidget(self.central_widget)
 
-        for i in range(4):
-            for j in range(1, 10, 2):
-                self.board[i][j - i % 2].checker = Checker("B")
-                self.board[6 + i][j - i % 2].checker = Checker("W")
-        self.setLayout(self.layout)
     def init_menu(self):
         """initialisation du menu"""
         self.menu = self.menuBar()
